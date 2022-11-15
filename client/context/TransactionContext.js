@@ -32,38 +32,29 @@ export const TransactionProvider = ({children}) => {
         amount:'',
     })
 
-    useEffect(() => {
-        checkIfWalletIsConnected()
-    },[] )
-
     /**
      * Create progfile in sanity
      */
     useEffect(() => {
         if(!currentAccount) return
+
         ;(async ()=> {
             const userDoc = {
                 _type:'users',
                 _id:currentAccount,
                 userName: 'Unnamed',
-                address: 'currentAccount',
+                address: currentAccount,
             }
 
             await client.createIfNotExists(userDoc)
-        })
+        })()
     },[currentAccount] )
 
 
-     const connectWallet = async(metamask = eth) => {
-        try {
-            if(!metamask) return alert('Please install metamask')
-            const accounts = await metamask.request({method: 'eth_requestAccounts'})
-            setCurrentAccount(accounts[0])
-        }catch(error) {
-            console.log(error)
-            throw new Error('No ETH obj')
-        }
+    const handleChange = (e,name) => {
+        setFormData(prevState =>({...prevState,[name]: e.target.value}))
     }
+
 
     const checkIfWalletIsConnected = async(metamask = eth) => {
         try{
@@ -80,6 +71,19 @@ export const TransactionProvider = ({children}) => {
             console.log(error)
         }
     }
+
+    const connectWallet = async(metamask = eth) => {
+        try {
+            if(!metamask) return alert('Please install metamask')
+            const accounts = await metamask.request({method: 'eth_requestAccounts'})
+            setCurrentAccount(accounts[0])
+        }catch(error) {
+            console.log(error)
+            throw new Error('No ETH obj')
+        }
+    }
+
+ 
 
     const sendTransaction = async (metamask = eth, connectedAccount = currentAccount) => {
         try{
@@ -127,9 +131,7 @@ export const TransactionProvider = ({children}) => {
         }
     }
 
-    const handleChange = (e,name) => {
-        setFormData(prevState =>({...prevState,[name]: e.target.value}))
-    }
+
 
     const saveTransaction = async (txHash, amount, fromAddress= currentAccount,toAddress ) => {
         const txDoc = {
@@ -157,6 +159,10 @@ export const TransactionProvider = ({children}) => {
 
         return
     }
+
+    useEffect(() => {
+        checkIfWalletIsConnected()
+    },[] )
   
     return (
         <TransactionContext.Provider
@@ -167,6 +173,7 @@ export const TransactionProvider = ({children}) => {
                     sendTransaction,
                     handleChange,
                     formData,
+                    isLoading,
                 }
             }
         >

@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Header from '../components/Header'
 import Main from '../components/Main'
+import TransactionHistory from '../components/TransactionHistory'
+
 
 
 const style = {
@@ -13,7 +15,7 @@ export default function Home(){
     <div className={style.wrapper}>
       <Header/>
       <Main/>
-      <h2>Transactions</h2>
+      <TransactionHistory/>
     </div>
   )
 }
