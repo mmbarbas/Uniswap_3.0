@@ -4,5 +4,7 @@ Uniswap clone using - Solidity | Next.js | Sanity.io
 To run go to the client folder and run the command "yarn dev"
 
 
-https://user-images.githubusercontent.com/105460548/202408247-20a244d8-0066-4749-863c-a70af80be200.mp4
+
+
+https://user-images.githubusercontent.com/105460548/202411298-9a22e4b7-f320-409d-8a23-596cccba6489.mp4
 
